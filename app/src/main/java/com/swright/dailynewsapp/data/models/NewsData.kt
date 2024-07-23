@@ -1,5 +1,5 @@
 package com.swright.dailynewsapp.data.models
 
-data class NewsList(
+data class NewsData(
     val response: Response
 )

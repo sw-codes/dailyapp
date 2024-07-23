@@ -7,9 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.swright.dailynewsapp.data.models.Result
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class NewsViewModel: ViewModel() {
 
@@ -37,8 +34,21 @@ class NewsViewModel: ViewModel() {
             )
         }
     }
+
+    fun gwtWeatherVM() {
+        viewModelScope.launch {
+            val response = repository.getWeather()
+            println(response)
+            state = state.copy(
+                weatherText = response.body()!!.current.condition.text,
+                weatherTempDegrees = response.body()!!.current.temp_c.toString()
+            )
+        }
+    }
 }
 
 data class ScreenState(
-    val newsItems: List<Result> = emptyList()
+    val newsItems: List<Result> = emptyList(),
+    val weatherText: String = "",
+    val weatherTempDegrees: String = ""
 )
