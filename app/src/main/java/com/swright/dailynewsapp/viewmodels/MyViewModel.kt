@@ -8,13 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.swright.dailynewsapp.data.models.Result
 import kotlinx.coroutines.launch
 
-class NewsViewModel: ViewModel() {
+class MyViewModel: ViewModel() {
 
     private val repository = Repository()
     var state by mutableStateOf(ScreenState())
 
     init {
         getUkNewsListVM()
+        getWeatherVM()
     }
 
     fun getWorldNewsListVM() {
@@ -35,7 +36,7 @@ class NewsViewModel: ViewModel() {
         }
     }
 
-    fun gwtWeatherVM() {
+    private fun getWeatherVM() {
         viewModelScope.launch {
             val response = repository.getWeather()
             println(response)

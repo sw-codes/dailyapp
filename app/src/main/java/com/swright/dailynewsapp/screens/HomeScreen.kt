@@ -1,9 +1,11 @@
 package com.swright.dailynewsapp.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,33 +15,34 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.swright.dailynewsapp.viewmodels.NewsViewModel
+import com.swright.dailynewsapp.viewmodels.MyViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @Composable
 fun HomeScreen() {
-    val newsViewModel = viewModel<NewsViewModel>()
-    val state = newsViewModel.state
+    val myViewModel = viewModel<MyViewModel>()
+    val state = myViewModel.state
 
-    println(newsViewModel.gwtWeatherVM())
-    println(state.weatherText)
+    val localUriHandler = LocalUriHandler.current
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(top = 8.dp)
     ) {
+        //Date info card
         Card(
             colors = CardDefaults.cardColors(
 
@@ -55,20 +58,22 @@ fun HomeScreen() {
                     .padding(4.dp)
             ) {
                 Text(
-                    text = "Today's date is:",
+                    text = "Today's date:",
                     fontSize = 16.sp,
                     textDecoration = TextDecoration.Underline,
                     modifier = Modifier.padding(start = 8.dp)
                 )
-                val currentDate = SimpleDateFormat("EEEE, MMM d", Locale.ROOT).format(Date())
+                val currentDate = SimpleDateFormat("E, MMMM d", Locale.ROOT).format(Date())
                 Text(
                     text = currentDate + "th",
                     fontSize = 36.sp,
-                    modifier = Modifier.fillMaxWidth().padding(start = 24.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 24.dp)
                 )
             }
         }
-
+        //Weather info card
         Card(
             colors = CardDefaults.cardColors(
 
@@ -101,7 +106,7 @@ fun HomeScreen() {
                 )
             }
         }
-
+        //News articles card
         Card(
             colors = CardDefaults.cardColors(
 
@@ -114,34 +119,54 @@ fun HomeScreen() {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp),
+                    .padding(top = 8.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Button(onClick = { newsViewModel.getUkNewsListVM() }) {
+                Button(
+                    onClick = { myViewModel.getUkNewsListVM() },
+                    shape = RoundedCornerShape(8.dp)
+                ) {
                     Text(
                         text = "UK News",
                         fontSize = 20.sp
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
-                Button(onClick = { newsViewModel.getWorldNewsListVM() }) {
+                Button(
+                    onClick = { myViewModel.getWorldNewsListVM() },
+                    shape = RoundedCornerShape(8.dp)
+                ) {
                     Text(
                         text = "World News",
                         fontSize = 20.sp
                     )
                 }
             }
-            LazyColumn(modifier = Modifier.padding(top = 8.dp, start = 12.dp, end = 12.dp)) {
+            HorizontalDivider(
+                thickness = 2.dp,
+                modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+            )
+            LazyColumn(modifier = Modifier
+                .padding(
+                    start = 12.dp,
+                    end = 12.dp
+                )
+                .fillMaxHeight()) {
                 items(state.newsItems.size) {
                     Text(
                         text = state.newsItems[it].webTitle,
-                        modifier = Modifier.padding(4.dp)
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable {
+                                println(state.newsItems[it].webTitle + "clicked")
+                                localUriHandler.openUri(state.newsItems[it].webUrl)
+                            }
                     )
+                    HorizontalDivider(thickness = 2.dp)
                 }
             }
         }
-
-
     }
 }
 
