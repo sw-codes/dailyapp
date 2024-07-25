@@ -12,20 +12,24 @@ import java.util.Locale
 
 class Repository {
 
+    val currentDate = SimpleDateFormat("yyyy-M-dd", Locale.ROOT).format(Date())
+
     suspend fun getWorldNewsList(): Response<NewsData> {
-        val currentDate = SimpleDateFormat("yyyy-M-dd", Locale.ROOT).format(Date())
-        println(currentDate)
         return NewsRetrofitInstance.api.getWorldNews(
             fromDate = currentDate,
             toDate = currentDate,
             pageSize = 10,
             apiKey = Constants.GUARDIAN_NEWS_API_KEY
         )
-
     }
 
     suspend fun getUkNewsList(): Response<NewsData> {
-        return NewsRetrofitInstance.api.getUkNews()
+        return NewsRetrofitInstance.api.getUkNews(
+            fromDate = currentDate,
+            toDate = currentDate,
+            pageSize = 10,
+            apiKey = Constants.GUARDIAN_NEWS_API_KEY
+        )
     }
 
     suspend fun getWeather(): Response<WeatherData> {

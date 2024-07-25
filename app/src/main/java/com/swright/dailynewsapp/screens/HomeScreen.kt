@@ -25,10 +25,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.swright.dailynewsapp.theme.DailyNewsAppTheme
 import com.swright.dailynewsapp.viewmodels.MyViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 @Composable
 fun HomeScreen() {
@@ -63,9 +63,9 @@ fun HomeScreen() {
                     textDecoration = TextDecoration.Underline,
                     modifier = Modifier.padding(start = 8.dp)
                 )
-                val currentDate = SimpleDateFormat("E, MMMM d", Locale.ROOT).format(Date())
+                val currentDate = SimpleDateFormat("E, d'th' MMMM").format(Date())
                 Text(
-                    text = currentDate + "th",
+                    text = currentDate,
                     fontSize = 36.sp,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -153,13 +153,13 @@ fun HomeScreen() {
                 )
                 .fillMaxHeight()) {
                 items(state.newsItems.size) {
+                    println("newsitems size: " + state.newsItems.size)
                     Text(
                         text = state.newsItems[it].webTitle,
                         fontSize = 16.sp,
                         modifier = Modifier
                             .padding(4.dp)
                             .clickable {
-                                println(state.newsItems[it].webTitle + "clicked")
                                 localUriHandler.openUri(state.newsItems[it].webUrl)
                             }
                     )
@@ -173,5 +173,7 @@ fun HomeScreen() {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    DailyNewsAppTheme {
+        HomeScreen()
+    }
 }
