@@ -39,7 +39,6 @@ class MyViewModel: ViewModel() {
     private fun getWeatherVM() {
         viewModelScope.launch {
             val response = repository.getWeather()
-            println(response)
             state = state.copy(
                 weatherText = response.body()!!.current.condition.text,
                 weatherTempDegrees = response.body()!!.current.temp_c.toString()

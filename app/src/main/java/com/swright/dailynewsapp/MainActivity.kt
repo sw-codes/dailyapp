@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.swright.dailynewsapp.screens.HomeScreen
-import com.swright.dailynewsapp.theme.DailyNewsAppTheme
+import com.swright.dailynewsapp.ui.theme.DailyNewsAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
