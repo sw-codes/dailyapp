@@ -26,9 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.swright.dailynewsapp.ui.theme.DailyNewsAppTheme
 import com.swright.dailynewsapp.viewmodels.MyViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Composable
 fun HomeScreen() {
@@ -60,10 +57,8 @@ fun HomeScreen() {
                     textDecoration = TextDecoration.Underline,
                     modifier = Modifier.padding(start = 8.dp)
                 )
-                val currentDate = SimpleDateFormat("E, d'th' MMMM", Locale.getDefault())
-                    .format(Date())
                 Text(
-                    text = currentDate,
+                    text = state.dateInfo,
                     fontSize = 36.sp,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -138,12 +133,14 @@ fun HomeScreen() {
                 thickness = 2.dp,
                 modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
             )
-            LazyColumn(modifier = Modifier
-                .padding(
-                    start = 12.dp,
-                    end = 12.dp
-                )
-                .fillMaxHeight()) {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(
+                        start = 12.dp,
+                        end = 12.dp
+                    )
+                    .fillMaxHeight()
+            ) {
                 items(state.newsItems.size) {
                     Text(
                         text = state.newsItems[it].webTitle,

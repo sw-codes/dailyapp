@@ -7,6 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.swright.dailynewsapp.data.models.Result
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MyViewModel: ViewModel() {
 
@@ -16,6 +19,7 @@ class MyViewModel: ViewModel() {
     init {
         getUkNewsListVM()
         getWeatherVM()
+        getDate()
     }
 
     fun getWorldNewsListVM() {
@@ -45,10 +49,29 @@ class MyViewModel: ViewModel() {
             )
         }
     }
+
+    private fun getDate(){
+        viewModelScope.launch {
+            val dateOfMonth = SimpleDateFormat("d", Locale.getDefault()).format(Date()).toString()
+            var datePatterString = ""
+            when (dateOfMonth.last()) {
+                '1' -> datePatterString = "E, d'st of' MMMM"
+                '2' -> datePatterString = "E, d'nd of' MMMM"
+                '3' -> datePatterString = "E, d'rd of' MMMM"
+                else -> datePatterString = "E, d'th of' MMMM"
+            }
+            val todayDate = SimpleDateFormat(datePatterString, Locale.getDefault()).format(Date()).toString()
+            state = state.copy(
+                dateInfo = todayDate
+            )
+        }
+
+    }
 }
 
 data class ScreenState(
     val newsItems: List<Result> = emptyList(),
     val weatherText: String = "",
-    val weatherTempDegrees: String = ""
+    val weatherTempDegrees: String = "",
+    val dateInfo: String = ""
 )

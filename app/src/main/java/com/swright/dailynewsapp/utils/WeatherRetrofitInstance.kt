@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object WeatherRetrofitInstance {
     val api: ApiInterface by lazy {
         Retrofit.Builder()
-            .baseUrl(Constants.BaseWeatherUrl)
+            .baseUrl(Constants.BASE_WEATHER_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiInterface::class.java)
