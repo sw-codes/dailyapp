@@ -53,7 +53,7 @@ class MyViewModel: ViewModel() {
     private fun getDate(){
         viewModelScope.launch {
             val dateOfMonth = SimpleDateFormat("d", Locale.getDefault()).format(Date()).toString()
-            var datePatterString = ""
+            val datePatterString: String
             when (dateOfMonth.last()) {
                 '1' -> datePatterString = "E, d'st of' MMMM"
                 '2' -> datePatterString = "E, d'nd of' MMMM"

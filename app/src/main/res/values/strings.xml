@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DailyNewsApp</string>
+    <string name="today_s_date_title">Today\'s date:</string>
+    <string name="today_s_weather_title">Today\'s weather:</string>
+    <string name="degrees_c">°C</string>
+    <string name="uk_news_button_text">UK News</string>
+    <string name="world_news_button_text">World News</string>
 </resources>
